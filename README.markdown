@@ -12,7 +12,7 @@ This is a utility for Symphony extensions that helps creating a stage for managi
 
 ### Documentation
 
-_nothing yet_
+Stage should make use of the (upcoming) core Symphony javascript plugins, see <http://github.com/rowan-lewis/interface>
 
 ### Change Log
 

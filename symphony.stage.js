@@ -6,7 +6,7 @@
  */
 
 
-	jQuery.fn.symphonyStage = function() {
+	jQuery.fn.symphonyStage = function(custom_settings) {
 
 		var objects = this;
 		var settings = {

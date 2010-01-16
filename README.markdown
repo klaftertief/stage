@@ -1,6 +1,6 @@
 # Stage for Symphony
 
-This is a utility for Symphony extensions that helps creating a stage for managing multiple inline elements in the backend (adding new items, removing items, sorting items) used in fields like [Mediathek 2.1dev](http://github.com/nilshoerrmann/mediathek/) or [Date and Time 1.4dev](http://github.com/nilshoerrmann/datetime/).
+This is a utility for Symphony extensions that helps creating a stage for managing multiple inline elements in the backend (adding new items, removing items, sorting items) used in fields like [Mediathek 2.1dev](http://github.com/nilshoerrmann/mediathek/tree/experimental/) or [Date and Time 1.4dev](http://github.com/nilshoerrmann/datetime/tree/experimental/).
 
 - Version: 1.0dev
 - Date: **UNRELEASED**

@@ -8,6 +8,8 @@ This is a utility for Symphony extensions that helps creating a stage for managi
 - Repository: <http://github.com/nilshoerrmann/stage/>
 - Requirements: Symphony CMS 2.0.7 or newer, <http://github.com/symphony/symphony-2/>
 
+![Concept](http://projekte.nilshoerrmann.de/screenshots/sym_stage.png)
+
 ### Documentation
 
 _nothing yet_

@@ -1,0 +1,56 @@
+/**
+ * STAGE for Symphony
+ *
+ * @author Nils Hörrmann, http://www.nilshoerrmann.de
+ */
+
+div.stage {
+	margin: -1.75em 0 1.75em;
+}
+
+div.stage ul.stage {
+	border-top: 1px solid #c2c2c2;
+	border-bottom: 1px solid #c2c2c2;
+	list-style: none;
+	margin: 0;
+	overflow: hidden;
+}
+
+div.stage ul li {
+	position: relative;
+	background: #e6e6e5;
+	border-bottom: 1px solid #f3f3f3;
+	border-left: 1px solid #d3d3d3;
+	border-right: 1px solid #d3d3d3;
+	min-height: 30px;
+}
+
+div.stage ul li.active {
+/*	border-top: 1px solid #f3f3f3;
+	background: #d3d3d3;
+	-moz-box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+	-webkit-box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+	z-index: 1000;*/
+}
+
+div.stage ul a.destructor {
+	position: absolute;
+	top: 7px;
+	right: 14px;
+	text-decoration: none;
+}
+
+div.stage ul li span {
+	display: block;
+	padding: 7px 14px;
+}
+
+div.stage ul li div.floor {
+	display: none;
+}
+
+div.stage ul li.active div.floor {
+	display: block;
+	background: #353533;
+	min-height: 30px;
+}

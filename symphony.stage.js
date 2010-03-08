@@ -66,6 +66,8 @@
 			
 			// Construct a new item
 			var construct = function(item) {
+			
+				object.trigger('constructStart');
 
 				var value = item.attr('value');
 				
@@ -86,12 +88,15 @@
 				if(source.size() > 0) {
 					source.find('option[value=' + value + ']').attr('selected', 'selected');
 				}
+
+				object.trigger('constructEnd');
 				
 			};
 			
 			// Destruct an item
 			var destruct = function(item) {
 				
+				object.trigger('destructStart');
 				var value = item.attr('value');
 
 				// Remove stage selection
@@ -113,6 +118,8 @@
 				if(selection.size() <= 1) {
 					object.find('ul.selection li.empty').slideDown(settings.speed);
 				}
+
+				object.trigger('destructEnd');
 
 			};
 			
@@ -169,11 +176,10 @@
 					if(queue.find('ul').size() == 0) {
 						
 						// Append queue
-						var list = jQuery('<ul class="queue"></ul>').appendTo(queue).hide();
+						var list = jQuery('<ul class="queue"></ul>').appendTo(queue).slideDown('fast');
 						
 						// Get queue content
 						if(settings.queue_ajax) {
-							list.append(jQuery('<li class="message loading"><span>' + Symphony.Language.get('Load items') + ' &#8230;</span></li>')).slideDown(settings.speed);
 							jQuery.ajax(jQuery.extend({
 								async: false,
 								type: 'GET',
@@ -219,7 +225,7 @@
 									}
 								}
 							}, settings.queue_ajax));
-						}
+						} 
 						
 						// Empty queue information
 						if(queue.find('li').size() == 0) {

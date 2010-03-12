@@ -29,28 +29,28 @@ div.stage ul li {
 	border-right: 1px solid #d3d3d3;
 	height: 30px;
 	color: #3f3d35;
-}
-
-
-
-
-div.stage.ordering li {
-	background: #d0cfc9;
-	border-bottom: 1px solid #deddd9;
-	border-left: 1px solid #b5b4af;
-	border-right: 1px solid #b5b4af;
+	padding-right: 42px;
 }
 
 div.stage li.ordering {
-	background: #e6e6e5;
-	border-top: 1px solid #fff;
-	border-bottom: 1px solid #fff;
+	background: #d3d3d3;
+	border-bottom: 1px solid #deddd9;
 	border-left: 1px solid #b5b4af;
 	border-right: 1px solid #b5b4af;
-	-moz-box-shadow: 0 0 4px rgba(46, 45, 40, 0.4);
-	-webkit-box-shadow: 0 0 4px rgba(46, 45, 40, 0.4);
-	cursor: move;
+	border-top: 1px solid #c2c2c2;
+	-moz-box-shadow: 0 0 4px rgba(46, 45, 40, 0.3);
+	-webkit-box-shadow: 0 0 4px rgba(46, 45, 40, 0.3);
 	z-index: 1000;
+}
+
+div.stage li.active {
+	background: #d3d3d3;
+	border-bottom: 1px solid #deddd9;
+	border-left: 1px solid #b5b4af;
+	border-right: 1px solid #b5b4af;
+	border-top: 1px solid #c2c2c2;
+	-moz-box-shadow: 0 0 4px rgba(46, 45, 40, 0.3);
+	-webkit-box-shadow: 0 0 4px rgba(46, 45, 40, 0.3);
 }
 
 
@@ -74,10 +74,6 @@ div.stage li a.destructor {
 	border: 1px solid #cdcdcd;
 }
 
-div.stage li.active a.destructur {
-	background-color: #cdcdcd !important;
-}
-
 div.stage li a.destructor:hover {
 	background-color: #a59e9e;
 	border-color: #a59e9e;
@@ -85,7 +81,22 @@ div.stage li a.destructor:hover {
 
 div.stage ul li span {
 	display: block;
-	padding: 7px 14px;
+	padding: 0;
+	margin: 7px 14px;
+}
+
+div.stage ul li span.handle {
+	position: absolute;
+	top: 0;
+	left: 0;
+	margin: 0;
+	width: 62px;
+	height: 100%;
+	cursor: move;
+}
+
+div.stage ul li .handle {
+	cursor: move;
 }
 
 div.stage ul li.template {

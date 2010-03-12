@@ -52,7 +52,9 @@
 		Orderable
 	-------------------------------------------------------------------------*/
 		
-		if(settings.orderable) objects = objects.symphonyOrderable();
+		if(settings.orderable) objects = objects.symphonyOrderable({
+			handles:			'.handle, img',
+		});
 
 		
 	/*-------------------------------------------------------------------------

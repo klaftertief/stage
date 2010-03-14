@@ -35,7 +35,9 @@
 			source:				false,					// A stage source, e. g. a select box 
 			queue:				'div.queue input',		// Handle for queue
 			queue_ajax:			false,					// AJAX options for queue
-			orderable:			true,					// Can instances be ordered?
+			draggable:			true,					// Can items be dragged?
+			droppable:			false,					// Can items be dropped?
+			dragclick:			jQuery.noop(),			// Click function for draggable items
 			constructable:		true,					// Allow construction of new instances?
 			destructable:		true,					// Allow destruction of instances?
 			searchable:			true,					// Allow searching of queue?
@@ -49,11 +51,12 @@
 
 	
 	/*-------------------------------------------------------------------------
-		Orderable
+		Draggable
 	-------------------------------------------------------------------------*/
 		
-		if(settings.orderable) objects = objects.symphonyOrderable({
-			handles:			'.handle, img',
+		if(settings.draggable) objects.find('ul.selection').symphonyDraggable({
+			handles:			false,
+			click:				settings.dragclick
 		});
 
 		
@@ -82,7 +85,7 @@
 				
 				// Add stage selection
 				var stage_item = queue_item.clone().hide();
-				stage_item.appendTo(object.find('ul:first')).slideDown(settings.speed);
+				stage_item.insertAfter(object.find('ul.selection li:not(.template):not(.empty):last')).slideDown(settings.speed);
 				object.stage.addDestructor(stage_item);
 				
 				// Add source selection

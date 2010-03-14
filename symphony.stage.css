@@ -32,7 +32,11 @@ div.stage ul li {
 	padding-right: 42px;
 }
 
-div.stage li.ordering {
+div.stage ul li:hover {
+	background: #dcdcdc;
+}
+
+div.stage li.dragging, div.stage li.dragging:hover {
 	background: #d3d3d3;
 	border-bottom: 1px solid #deddd9;
 	border-left: 1px solid #b5b4af;
@@ -43,7 +47,7 @@ div.stage li.ordering {
 	z-index: 1000;
 }
 
-div.stage li.active {
+div.stage li.active, div.stage li.active:hover {
 	background: #d3d3d3;
 	border-bottom: 1px solid #deddd9;
 	border-left: 1px solid #b5b4af;
@@ -83,20 +87,6 @@ div.stage ul li span {
 	display: block;
 	padding: 0;
 	margin: 7px 14px;
-}
-
-div.stage ul li span.handle {
-	position: absolute;
-	top: 0;
-	left: 0;
-	margin: 0;
-	width: 62px;
-	height: 100%;
-	cursor: move;
-}
-
-div.stage ul li .handle {
-	cursor: move;
 }
 
 div.stage ul li.template {

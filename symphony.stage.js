@@ -152,6 +152,11 @@
 						object.find('ul:first').after(queue);
 					}
 					
+					// Prevent clicks on layout anchors
+					object.find('a.file, a.image').click(function(event) {
+						event.preventDefault();
+					});
+					
 					// Add destructors
 					object.stage.addDestructor(items);
 
@@ -221,6 +226,11 @@
 													construct(item);
 												}
 												
+											});
+											
+											// Prevent clicks on layout anchors
+											element.find('a.file, a.image').click(function(event) {
+												event.preventDefault();
 											});
 											
 										});

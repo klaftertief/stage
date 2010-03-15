@@ -85,7 +85,7 @@
 				
 				// Add stage selection
 				var stage_item = queue_item.clone().hide();
-				stage_item.insertAfter(object.find('ul.selection li:not(.template):not(.empty):last')).slideDown(settings.speed);
+				stage_item.insertBefore(object.find('ul.selection li.empty')).slideDown(settings.speed);
 				object.stage.addDestructor(stage_item);
 				
 				// Add source selection
@@ -101,7 +101,7 @@
 			// Destruct an item
 			var destruct = function(item) {
 				
-				object.trigger('destructStart');
+				object.trigger('destructStart', item);
 				var value = item.attr('value');
 
 				// Remove stage selection

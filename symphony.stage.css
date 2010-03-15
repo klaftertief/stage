@@ -27,7 +27,7 @@ div.stage ul li, div.stage ul.dragging li:hover {
 	border-bottom: 1px solid #f3f3f3;
 	border-left: 1px solid #d3d3d3;
 	border-right: 1px solid #d3d3d3;
-	height: 30px;
+/*	height: 30px;*/
 	color: #3f3d35;
 	padding-right: 42px;
 }
@@ -83,10 +83,12 @@ div.stage li a.destructor:hover {
 	border-color: #a59e9e;
 }
 
-div.stage ul li span, div.draghelper span {
+div.stage ul li span, div.draghelper span, div.stage ul li a.file, div.draghelper a.file {
 	display: block;
 	padding: 0;
 	margin: 7px 14px;
+	color: #3f3d35;
+	text-decoration: none;
 }
 
 div.stage ul li.template {
@@ -178,6 +180,10 @@ div.stage div.queue li.selected {
 	border-bottom: 1px solid #617dc5;
 }
 
+div.stage div.queue li.selected a.file {
+	color: #fff;
+}
+
 div.stage div.queue li.odd.selected {
 	background: #5273c0;
 }
@@ -185,7 +191,7 @@ div.stage div.queue li.odd.selected {
 div.draghelper {
 	background: #e6e6e5;
 	border: 1px solid #d3d3d3;
-	height: 30px;
+/*	height: 30px;*/
 	color: #3f3d35;
 	position: absolute;
 	z-index: 2000;

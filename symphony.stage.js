@@ -84,7 +84,7 @@
 				queue_item.addClass('selected');
 				
 				// Add stage selection
-				var stage_item = queue_item.clone().hide();
+				var stage_item = queue_item.clone().removeClass('selected').hide();
 				stage_item.insertBefore(object.find('ul.selection li.empty')).slideDown(settings.speed);
 				object.stage.addDestructor(stage_item);
 				

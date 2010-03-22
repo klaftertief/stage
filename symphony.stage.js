@@ -187,7 +187,7 @@
 					if(queue.find('ul').size() == 0) {
 						
 						// Append queue
-						var list = jQuery('<ul class="queue"></ul>').appendTo(queue).slideDown('fast');
+						var list = jQuery('<ul class="queue"></ul>').css('min-height', 50).appendTo(queue).slideDown('fast');
 						
 						// Get queue content
 						if(settings.queue_ajax) {
@@ -247,6 +247,9 @@
 						if(queue.find('li').size() == 0) {
 							list.append(jQuery('<li class="message"><span>' + Symphony.Language.get('There are currently no items available. Perhaps you want create one first?') + ' <a class="create">' + Symphony.Language.get('Click here to create a new item.') + '</a></span></li>')).slideDown(settings.queue_speed);
 						}
+						
+						// Reset minimum height
+						list.css('min-height', 0);
 						
 					}
 

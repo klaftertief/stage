@@ -158,7 +158,6 @@ div.stage div.queue ul {
 	margin: 0 0 5px;
 	max-height: 270px;
 	overflow: auto;
-	min-height: 52px;
 	background: #fff url(images/loading-light.gif) center no-repeat;
 }
 

@@ -89,6 +89,12 @@
 				stage_item.insertBefore(object.find('ul.selection li.empty')).slideDown(settings.speed);
 				object.stage.addDestructor(stage_item);
 				
+				// Prevent clicks on layout anchors
+				object.find('a.file, a.image').click(function(event) {
+					event.preventDefault();
+				});
+
+				
 				// Add source selection
 				var source = jQuery(settings.source);
 				if(source.size() > 0) {

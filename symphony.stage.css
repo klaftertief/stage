@@ -27,7 +27,6 @@ div.stage ul li, div.stage ul.dragging li:hover {
 	border-bottom: 1px solid #f3f3f3;
 	border-left: 1px solid #d3d3d3;
 	border-right: 1px solid #d3d3d3;
-/*	height: 30px;*/
 	color: #3f3d35;
 	padding-right: 42px;
 }
@@ -190,7 +189,6 @@ div.stage div.queue li.odd.selected {
 div.draghelper {
 	background: #e6e6e5;
 	border: 1px solid #d3d3d3;
-/*	height: 30px;*/
 	color: #3f3d35;
 	position: absolute;
 	z-index: 2000;

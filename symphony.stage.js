@@ -16,7 +16,8 @@
 		'Remove Item': false,
 		'There are currently no items available. Perhaps you want create one first?': false,
 		'Click here to create a new item.': false,
-		'Load items': false
+		'Load items': false,
+		'No items found.': false
 	});
  
 
@@ -299,6 +300,9 @@
 							// Show matching items
 							if(found) {
 								item.addClass('found').slideDown(settings.speed);
+								item.parent().find('li.none').slideUp(settings.speed, function(event) {
+									jQuery(this).remove();
+								});
 							}
 	
 							// Hide other items
@@ -308,8 +312,17 @@
 							
 						});
 
+						// Found items
+						var found = items.removeClass('odd').filter('.found');
+						
+						// None found
+						if(found.size() == 0 && items.parent().find('li.none').size() == 0) {
+							var none = jQuery('<li class="none"><span>' + Symphony.Language.get('No items found.') + '</span></li>');
+							items.parent().append(none).slideDown(settings.speed);
+						}
+												
 						// Reset zebra style
-						items.removeClass('odd').filter('.found').each(function(index, item) {
+						found.each(function(index, item) {
 							item = jQuery(item).removeClass('found');
 							if(index % 2 != 0) item.addClass('odd');
 						});
@@ -320,6 +333,9 @@
 					else {
 						items.removeClass('odd').filter(':odd').addClass('odd');
 						items.slideDown(settings.speed);
+						items.parent().find('li.none').slideUp(settings.speed, function(event) {
+							jQuery(this).remove();
+						});
 					}
 					
 				}

@@ -90,6 +90,10 @@ div.stage ul li span, div.draghelper span, div.stage ul li a.file, div.draghelpe
 	text-decoration: none;
 }
 
+div.stage div.queue ul li.selected span {
+	color: #fff;
+}
+
 div.stage ul li.template {
 	display: none;
 }

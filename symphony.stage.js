@@ -73,7 +73,7 @@
 			// Construct a new item
 			var construct = function(item) {
 			
-				object.trigger('constructStart');
+				object.trigger('constructstart');
 
 				var value = item.attr('value');
 				
@@ -101,14 +101,14 @@
 					source.find('option[value=' + value + ']').attr('selected', 'selected');
 				}
 
-				object.trigger('constructEnd');
+				object.trigger('constructstop');
 				
 			};
 			
 			// Destruct an item
 			var destruct = function(item) {
 				
-				object.trigger('destructStart', item);
+				object.trigger('destructstart', item);
 				var value = item.attr('value');
 
 				// Remove stage selection
@@ -131,7 +131,7 @@
 					object.find('ul.selection li.empty').slideDown(settings.speed);
 				}
 
-				object.trigger('destructEnd');
+				object.trigger('destructstop');
 
 			};
 			
@@ -174,6 +174,14 @@
 					if(settings.searchable) {
 						object.find('div.queue .browser').bind('click keyup', object.stage.search);
 					}
+					
+					// Events
+					object.bind('construct', function(event, item) {
+						construct(item);
+					});
+					object.bind('destruct', function(event, item) {
+						destruct(item);
+					});
 					
 				},
 				

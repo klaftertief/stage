@@ -8,4 +8,4 @@ This jQuery plugin creates an interface to manage item lists (like subsections) 
 - Repository: <http://github.com/nilshoerrmann/stage/>
 - Requirements: Symphony CMS 2.1 or newer, <http://github.com/symphony/symphony-2/>
 
-For example implementations please check the Subsection Manager](http://github.com/nilshoerrmann/subsectionmanager/) or [Date and Time](http://github.com/nilshoerrmann/datetime/tree/working/) extensions.
+For example implementations please check the [Subsection Manager](http://github.com/nilshoerrmann/subsectionmanager/) or [Date and Time](http://github.com/nilshoerrmann/datetime/tree/working/) extensions.

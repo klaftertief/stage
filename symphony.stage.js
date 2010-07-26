@@ -93,12 +93,10 @@
 				object.find('a.file, a.image').click(function(event) {
 					event.preventDefault();
 				});
-
 				
 				// Add source selection
-				var source = jQuery(settings.source);
-				if(source.size() > 0) {
-					source.find('option[value=' + value + ']').attr('selected', 'selected');
+				if(settings.source) {
+					sync(item);
 				}
 
 				object.trigger('constructstop');
@@ -120,9 +118,8 @@
 				object.find('div.queue li[value=' + value + ']').removeClass('selected');
 				
 				// Remove source selection
-				var source = jQuery(settings.source);
-				if(source.size() > 0) {
-					source.find('option[value=' + value + ']').removeAttr('selected');
+				if(settings.source) {
+					sync(item, 'destruct');
 				}
 				
 				// Add empty selection message
@@ -134,6 +131,46 @@
 				object.trigger('destructstop');
 
 			};
+			
+			// Synchronize source list
+			var sync = function(item, action) {
+			
+				var source = jQuery(settings.source);
+				var id = item.attr('value');
+				var selection = source.find('option[value=' + id + ']');
+						
+				// Destruct item
+				if(action == 'destruct') {
+
+					// Item exists in source list
+					if(selection.size() > 0) {
+						source.find('option[value=' + id + ']').removeAttr('selected');
+					}
+					
+					// Item does not exists in source list
+					else {
+						jQuery('<option value="' + id + '">New Item</option>').appendTo(source);
+					}
+				
+				}
+
+				// Construct item
+				else {
+
+					// Item exists in source list
+					if(selection.size() > 0) {
+						source.find('option[value=' + id + ']').attr('selected', 'selected');
+					}
+					
+					// Item does not exists in source list
+					else {
+						jQuery('<option value="' + id + '" selected="selected">New Item</option>').appendTo(source);
+					}
+				
+				}
+
+
+			}
 			
 		/*-------------------------------------------------------------------*/
 			
@@ -181,6 +218,9 @@
 					});
 					object.bind('destruct', function(event, item) {
 						destruct(item);
+					});
+					object.bind('sync', function(event, item) {
+						sync(item);
 					});
 					
 				},

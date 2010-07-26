@@ -1,11 +1,19 @@
 # Stage for Symphony
 
-This jQuery plugin creates an interface to manage item lists (like subsections) in Symphony.
+This is a utility for Symphony extensions that helps creating a stage for managing multiple inline elements in the backend (adding new items, removing items, sorting items).
 
-- Version: 1.0dev
-- Date: **UNRELEASED**
+- Version: 1.0
+- Date: 26th July 2010
 - Author: Nils Hörrmann, post@nilshoerrmann.de
 - Repository: <http://github.com/nilshoerrmann/stage/>
 - Requirements: Symphony CMS 2.1 or newer, <http://github.com/symphony/symphony-2/>
 
-For example implementations please check the [Subsection Manager](http://github.com/nilshoerrmann/subsectionmanager/) or [Date and Time](http://github.com/nilshoerrmann/datetime/tree/working/) extension.
+## Documentation
+
+_More to come._
+
+## Change Log
+
+**Version 1.0**
+
+- Initial release

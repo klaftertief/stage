@@ -111,6 +111,7 @@ div.stage div.queue {
 	-webkit-border-bottom-right-radius: 2px;
 	-moz-border-radius-bottomleft: 2px;
 	-moz-border-radius-bottomright: 2px;
+	min-height: 24px;
 }
 
 div.stage div.queue input {

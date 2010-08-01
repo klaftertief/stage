@@ -273,12 +273,21 @@
 												
 												// Deselect
 												if(item.hasClass('selected')) {
-													destruct(item);
+													if(settings.destructable) {
+														destruct(item);
+													}
 												}
 												
 												// Select
 												else {
-													construct(item);
+												
+													// Single selects
+													if(!settings.source.attr('multiple')) {
+														var old = object.find('li[value=' + settings.source.val() + ']');
+														destruct(old);
+													}
+
+													construct(item);											
 												}
 												
 											});

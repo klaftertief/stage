@@ -56,9 +56,6 @@ div.stage li.active, div.stage li.active:hover {
 	-webkit-box-shadow: 0 0 4px rgba(46, 45, 40, 0.3);
 }
 
-
-
-
 div.stage li a.destructor {
 	position: absolute;
 	top: 7px;
@@ -83,7 +80,7 @@ div.stage li a.destructor:hover {
 }
 
 div.stage ul li span, div.draghelper span, div.stage ul li a.file, div.draghelper a.file {
-	display: block;
+	display: inline-block;
 	padding: 0;
 	margin: 7px 14px;
 	color: #3f3d35;

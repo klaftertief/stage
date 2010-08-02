@@ -169,6 +169,10 @@
 				
 				}
 
+				// Make sure source is enabled
+				if(source.find('option').size() > 0) {
+					source.removeAttr('disabled');
+				}
 
 			}
 			

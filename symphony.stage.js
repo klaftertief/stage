@@ -253,7 +253,7 @@
 					object.bind('sync', function(event, item) {
 						sync(item);
 					});
-					object.find('ul.queue li').live('click', function(event) {
+					object.find('ul.queue li:not(.message)').live('click', function(event) {
 						select(event.currentTarget);
 					});
 					
@@ -272,9 +272,10 @@
 					var queue = object.find('div.queue');
 					
 					// Append queue if it's not present yet
-					if(queue.find('ul').size() == 0) {
+					if(queue.find('ul li').size() == 0) {
 						
 						// Append queue
+						queue.find('ul').remove();
 						var list = jQuery('<ul class="queue"></ul>').css('min-height', 50).appendTo(queue).slideDown('fast');
 						
 						// Get queue content

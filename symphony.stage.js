@@ -236,7 +236,11 @@
 					object.stage.addDestructor(items);
 
 					// Open queue on click
-					object.find(settings.queue).bind('click', this.showQueue);
+					object.find(settings.queue).bind('click', function(event) {
+						event.preventDefault();
+						event.stopPropagation();
+						object.stage.showQueue();
+					});
 					
 					// Search
 					if(settings.searchable) {
@@ -254,6 +258,8 @@
 						sync(item);
 					});
 					object.find('ul.queue li:not(.message)').live('click', function(event) {
+						event.preventDefault();
+						event.stopPropagation();
 						select(event.currentTarget);
 					});
 					
@@ -333,11 +339,8 @@
 
 					// Automatically hide queue later
 					jQuery('body').bind('click', function(event) {
-						var target = jQuery(event.target);
-						if(target.parents().filter('div.queue').size() == 0) {
-							object.stage.hideQueue();
-							jQuery('body').unbind('click');
-						}
+						object.stage.hideQueue();
+						jQuery('body').unbind('click');
 					});
 				},
 				

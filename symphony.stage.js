@@ -192,13 +192,18 @@
 				// Select
 				else {
 				
+					// Store old value
+					var old_value = settings.source.val();
+
+					// Construct new item
+					construct(item);											
+				
 					// Single selects
-					if(!settings.source.attr('multiple')) {
-						var old = object.find('li[value=' + settings.source.val() + ']');
+					if(!settings.source.attr('multiple') && old_value != 0) {
+						var old = object.find('ul.selection li[value=' + old_value + ']');
 						destruct(old);
 					}
 
-					construct(item);											
 				}
 				
 			}

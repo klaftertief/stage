@@ -33,21 +33,18 @@
 		
 		// Get settings
 		var settings = {
-			items:				'li:not(.template):not(.empty)',	//
-			source:				false,					// A stage source, e. g. a select box 
-			queue:				'div.queue input',		// Handle for queue
-			queue_ajax:			false,					// AJAX options for queue
-			draggable:			true,					// Can items be dragged?
-			droppable:			false,					// Can items be dropped?
-			dragclick:			jQuery.noop(),			// Click function for draggable items
-			constructable:		true,					// Allow construction of new instances?
-			destructable:		true,					// Allow destruction of instances?
-			searchable:			true,					// Allow searching of queue?
-			minimum:			0,						// Do not allow instances to be removed below this limit.
-			maximum:			1000,					// Do not allow instances to be added above this limit.
-			speed:				'fast',					// Control the speed of any animations
-			queue_speed:		'normal',
-			delay_initialize:	false
+			items:				'li:not(.template):not(.empty)',	// Currently selected items
+			selection:			'ul.selection',
+			source:				false,								// A stage source, e. g. a select box 
+			queue: {
+				constructor:		'<div class="queue" />',		// Queue markup
+				handle: 			'div.queue input',				// Handle for queue
+				ajax:				false,							// AJAX options for queue
+				speed:				'normal'						// Speed for queue animations
+			},
+			dragclick:			jQuery.noop(),						// Click function for draggable items
+			speed:				'fast',								// Control the speed of any animations
+			delay_initialize:	false								// Delay initialization
 		};
 		jQuery.extend(settings, custom_settings);
 
@@ -74,108 +71,57 @@
 			// Construct a new item
 			var construct = function(item) {
 			
-				object.trigger('constructstart');
+				object.trigger('constructstart', [item]);
+				object.stage.selection.addClass('constructing');
 
+				// Current value
 				var value = item.attr('value');
 				
 				// Remove empty selection message
-				object.find('ul.selection li.empty').slideUp('fast');
+				object.stage.empty.slideUp('fast');
 				
-				// Add queue selection
-				var queue_item = object.find('div.queue li[value=' + value + ']');
-				queue_item.addClass('selected');
+				// Elements
+				var queued = object.stage.queue.find('li[value=' + value + ']');
+				var selected = queued.clone().hide();
 				
-				// Add stage selection
-				var stage_item = queue_item.clone().removeClass('selected').hide();
-				stage_item.insertBefore(object.find('ul.selection li.empty')).slideDown(settings.speed);
-				object.stage.addDestructor(stage_item);
-				
-				// Prevent clicks on layout anchors
-				object.find('a.file, a.image').click(function(event) {
-					event.preventDefault();
+				// Add selections
+				queued.addClass('selected');
+				object.stage.addDestructor(selected);
+				selected.insertBefore(object.stage.empty).slideDown(settings.speed, function() {
+					object.stage.selection.removeClass('constructing');
 				});
-				
-				// Add source selection
-				if(settings.source) {
-					sync(item);
-				}
 
-				object.trigger('constructstop');
+				object.trigger('constructstop', [item]);
 				
 			};
 			
 			// Destruct an item
 			var destruct = function(item) {
 				
-				object.trigger('destructstart', item);
+				object.trigger('destructstart', [item]);
+				object.stage.selection.addClass('destructing');
+
+				// Current value
 				var value = item.attr('value');
 
-				// Remove stage selection
-				object.find('ul.selection li[value=' + value + ']').slideUp(settings.speed, function() {
+				// Remove selections
+				object.stage.selection.find('li[value=' + value + ']').slideUp(settings.speed, function() {
 					jQuery(this).remove();
 				});
+				object.stage.queue.find('li[value=' + value + ']').removeClass('selected');
 				
-				// Remove queue selection
-				object.find('div.queue li[value=' + value + ']').removeClass('selected');
+				// Check stage size
+				var selected = object.stage.selection.find(settings.items);
 				
-				// Remove source selection
-				if(settings.source) {
-					sync(item, 'destruct');
-				}
+					console.log(selected.size(), object.stage.selection.attr('class'));
 				
-				// Add empty selection message
-				var selection = object.find('ul.selection').find(settings.items);
-				if(selection.size() <= 1) {
-					object.find('ul.selection li.empty').slideDown(settings.speed);
+				if((selected.size() == 0 && object.stage.selection.not('.constructing'))) {
+					object.stage.empty.slideDown(settings.speed);
 				}
 
-				object.trigger('destructstop');
+				object.trigger('destructstop', [item]);
 
 			};
-			
-			// Synchronize source list
-			var sync = function(item, action) {
-			
-				var source = jQuery(settings.source);
-				var id = item.attr('value');
-				var selection = source.find('option[value=' + id + ']');
-						
-				// Destruct item
-				if(action == 'destruct') {
-
-					// Item exists in source list
-					if(selection.size() > 0) {
-						source.find('option[value=' + id + ']').removeAttr('selected');
-					}
-					
-					// Item does not exists in source list
-					else {
-						jQuery('<option value="' + id + '">New Item</option>').appendTo(source);
-					}
-				
-				}
-
-				// Construct item
-				else {
-
-					// Item exists in source list
-					if(selection.size() > 0) {
-						source.find('option[value=' + id + ']').attr('selected', 'selected');
-					}
-					
-					// Item does not exists in source list
-					else {
-						jQuery('<option value="' + id + '" selected="selected">New Item</option>').appendTo(source);
-					}
-				
-				}
-
-				// Make sure source is enabled
-				if(source.find('option').size() > 0) {
-					source.removeAttr('disabled');
-				}
-
-			}
 			
 			// Make selection clickable
 			var select = function(item) {
@@ -184,26 +130,28 @@
 				
 				// Deselect
 				if(item.hasClass('selected')) {
-					if(settings.destructable) {
+				
+					// Destruct item
+					if(object.is('.destructable')) {
 						destruct(item);
 					}
+					
 				}
 				
 				// Select
-				else {
-				
-					// Store old value
-					var old_value = settings.source.val();
-
-					// Construct new item
-					construct(item);											
-				
-					// Single selects
-					if(!settings.source.attr('multiple') && old_value != 0) {
-						var old = object.find('ul.selection li[value=' + old_value + ']');
-						destruct(old);
+				else {		
+					if(object.is('.constructable')) {
+						
+						// Construct item
+						construct(item);											
+					
+						// Single selects
+						if(object.not('.multiple')) {
+							var old = object.find(settings.items).filter('[value!=' + item.attr('value') + ']');
+							destruct(old);
+						}
+						
 					}
-
 				}
 				
 			}
@@ -216,24 +164,35 @@
 			
 			object.stage = {
 
+				// Get stage elements
+				selection: object.find(settings.selection),
+				empty: object.find('li.empty'),
+				queue: jQuery(settings.queue.constructor),
+
+				// Initialize Stage
 				initialize: function() {
 				
+					// Get items
 					var items = object.find(settings.items);
 					
+					// Stage size
 					if(items.size() > 0) {
-						object.find('ul.selection li.empty').hide();
+						object.stage.empty.hide();
 					}
 					
 					// Add queue
-					if(settings.searchable || settings.constructable) {
-						var queue = jQuery('<div class="queue" />');
-						if(settings.searchable) jQuery('<input type="search" placeholder="' + Symphony.Language.get('Browse') + ' &#8230;" class="browser" value="" />').appendTo(queue);
-						if(settings.constructable) jQuery('<button class="create">' + Symphony.Language.get('Create New') + '</button>').appendTo(queue);
-						object.find('ul:first').after(queue);
+					if(object.is('.searchable') || object.is('.constructable')) {
+						if(object.is('.searchable')) {
+							jQuery('<input type="search" placeholder="' + Symphony.Language.get('Browse') + ' &#8230;" class="browser" value="" />').appendTo(object.stage.queue);
+						}
+						if(object.is('.constructable')) {
+							jQuery('<button class="create">' + Symphony.Language.get('Create New') + '</button>').appendTo(object.stage.queue);
+						}
+						object.stage.selection.after(object.stage.queue);
 					}
 					
 					// Prevent clicks on layout anchors
-					object.find('a.file, a.image').click(function(event) {
+					object.find('a.file, a.image').live('click', function(event) {
 						event.preventDefault();
 					});
 					
@@ -241,15 +200,15 @@
 					object.stage.addDestructor(items);
 
 					// Open queue on click
-					object.find(settings.queue).bind('click', function(event) {
+					object.find(settings.queue.handle).bind('click', function(event) {
 						event.preventDefault();
 						event.stopPropagation();
 						object.stage.showQueue();
 					});
 					
 					// Search
-					if(settings.searchable) {
-						object.find('div.queue .browser').bind('click keyup', object.stage.search);
+					if(object.is('.searchable')) {
+						object.stage.queue.find('.browser').bind('click keyup', object.stage.search);
 					}
 					
 					// Events
@@ -262,7 +221,8 @@
 					object.bind('sync', function(event, item) {
 						sync(item);
 					});
-					object.find('ul.queue li:not(.message)').live('click', function(event) {
+					
+					object.find('div.queue li:not(.message)').live('click', function(event) {
 						event.preventDefault();
 						event.stopPropagation();
 						select(event.currentTarget);
@@ -271,7 +231,7 @@
 				},
 				
 				addDestructor: function(items) {
-					if(settings.destructable) {
+					if(object.is('.destructable')) {
 						jQuery('<a class="destructor">' + Symphony.Language.get('Remove Item') + '</a>').appendTo(items).click(function(event) {
 							var item = jQuery(event.target).parent('li');
 							destruct(item);
@@ -280,17 +240,16 @@
 				},
 				
 				showQueue: function(event) {
-					var queue = object.find('div.queue');
 					
 					// Append queue if it's not present yet
-					if(queue.find('ul li').size() == 0) {
+					if(object.stage.queue.find('ul li').size() == 0) {
 						
 						// Append queue
-						queue.find('ul').remove();
-						var list = jQuery('<ul class="queue"></ul>').css('min-height', 50).appendTo(queue).slideDown('fast');
+						object.stage.queue.find('ul').remove();
+						var list = jQuery('<ul class="queue" />').css('min-height', 50).appendTo(object.stage.queue).slideDown('fast');
 						
 						// Get queue content
-						if(settings.queue_ajax) {
+						if(settings.queue.ajax) {
 							jQuery.ajax(jQuery.extend({
 								async: false,
 								type: 'GET',
@@ -314,22 +273,22 @@
 											if(object.find('ul:first li[value=' + value + ']').size() > 0) element.addClass('selected');
 											
 											// Prevent clicks on layout anchors
-											element.find('a.file, a.image').click(function(event) {
-												event.preventDefault();
-											});
+//											element.find('a.file, a.image').click(function(event) {
+//												event.preventDefault();
+//											});
 											
 										});
 										
 										// Slide queue
-										list.slideDown(settings.queue_speed);
+										list.slideDown(settings.queue.speed);
 									}
 								}
-							}, settings.queue_ajax));
+							}, settings.queue.ajax));
 						} 
 						
 						// Empty queue information
-						if(queue.find('li').size() == 0) {
-							list.append(jQuery('<li class="message"><span>' + Symphony.Language.get('There are currently no items available. Perhaps you want create one first?') + ' <a class="create">' + Symphony.Language.get('Click here to create a new item.') + '</a></span></li>')).slideDown(settings.queue_speed);
+						if(object.stage.queue.find('li').size() == 0) {
+							list.append(jQuery('<li class="message"><span>' + Symphony.Language.get('There are currently no items available. Perhaps you want create one first?') + ' <a class="create">' + Symphony.Language.get('Click here to create a new item.') + '</a></span></li>')).slideDown(settings.queue.speed);
 						}
 						
 						// Reset minimum height
@@ -339,7 +298,7 @@
 
 					// Slide queue
 					else {
-						queue.find('ul').slideDown(settings.queue_speed);
+						object.stage.queue.find('ul').slideDown(settings.queue.speed);
 					}					
 
 					// Automatically hide queue later
@@ -350,10 +309,9 @@
 				},
 				
 				hideQueue: function() {
-					var queue = object.find('div.queue');
-					if(queue.find('ul').size() > 0) {
-						queue.find('ul').slideUp(settings.queue_speed);
-						queue.find('.browser').val('');
+					if(object.stage.queue.find('ul').size() > 0) {
+						object.stage.queue.find('ul').slideUp(settings.queue.speed);
+						object.stage.queue.find('.browser').val('');
 					}
 				},
 				
@@ -363,13 +321,13 @@
 
 					// Build search index
 					if(!this.search_index) {
-						this.search_index = object.find('div.queue li').map(function() {
+						this.search_index = object.stage.queue.find('li').map(function() {
 							return this.textContent.toLowerCase();
 						});
 					}
 					
 					// Searching
-					var items = object.find('div.queue ul li');
+					var items = object.stage.queue.find('li');
 					if(search.length > 0 && search[0] != '') {					
 						this.search_index.each(function(index, content) {
 						

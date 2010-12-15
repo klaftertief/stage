@@ -1,16 +1,7 @@
-/**
- * STAGE
- * for Symphony
- *
- * @author: Nils Hörrmann, http://nilshoerrmann.de
- * @source: http://github.com/nilshoerrmann/stage
- */
 
+(function($) {
 
-/*-----------------------------------------------------------------------------
-	Language strings
------------------------------------------------------------------------------*/
- 
+	// Language strings
 	Symphony.Language.add({
 		'Browse': false,
 		'Create New': false,
@@ -20,15 +11,15 @@
 		'Load items': false,
 		'No items found.': false
 	});
- 
 
-/*-----------------------------------------------------------------------------
-	Stage plugin
------------------------------------------------------------------------------*/
-	
+	/**
+	 * Stage is a JavaScript utility for Symphony 
+	 * which adds a multiselect interface to the backend.
+	 *
+	 * @author: Nils Hörrmann, post@nilshoerrmann.de
+	 * @source: http://github.com/nilshoerrmann/stage
+	 */
 	jQuery.fn.symphonyStage = function(custom_settings) {
-	
-		// Get objects
 		var objects = this;
 		
 		// Get settings
@@ -47,25 +38,10 @@
 			delay_initialize:	false								// Delay initialization
 		};
 		jQuery.extend(settings, custom_settings);
-
+		
+	/*-----------------------------------------------------------------------*/
 	
-	/*-------------------------------------------------------------------------
-		Draggable
-	-------------------------------------------------------------------------*/
-		
-		if(settings.draggable) objects.find('ul.selection').symphonyDraggable({
-			handles:			false,
-			click:				settings.dragclick
-		});
-
-		
-	/*-------------------------------------------------------------------------
-		Stage
-	-------------------------------------------------------------------------*/
-		
 		objects = objects.map(function() {
-
-			// This object
 			var object = this;
 			
 			// Construct a new item
@@ -393,3 +369,10 @@
 		
 		return objects;
 	};
+
+	// Initialize Stage	
+	$('document').ready(function() {
+		$('.stage').symphonyStage();
+	});
+	
+})(jQuery.noConflict());

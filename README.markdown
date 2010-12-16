@@ -16,8 +16,8 @@ _More to come._
 
 **Version 1.1**
 
-- General update
+- General update.
 
 **Version 1.0**
 
-- Initial release
+- Initial release.

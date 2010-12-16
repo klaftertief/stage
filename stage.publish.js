@@ -19,7 +19,7 @@
 	 * @author: Nils Hörrmann, post@nilshoerrmann.de
 	 * @source: http://github.com/nilshoerrmann/stage
 	 */
-	jQuery.fn.symphonyStage = function(custom_settings) {
+	$.fn.symphonyStage = function(custom_settings) {
 		var objects = this;
 		
 		// Get settings
@@ -33,11 +33,11 @@
 				ajax:				false,							// AJAX options for queue
 				speed:				'normal'						// Speed for queue animations
 			},
-			dragclick:			jQuery.noop(),						// Click function for draggable items
+			dragclick:			$.noop(),						// Click function for draggable items
 			speed:				'fast',								// Control the speed of any animations
 			delay_initialize:	false								// Delay initialization
 		};
-		jQuery.extend(settings, custom_settings);
+		$.extend(settings, custom_settings);
 		
 	/*-----------------------------------------------------------------------*/
 	
@@ -82,7 +82,7 @@
 
 				// Remove selections
 				object.stage.selection.find('li[value=' + value + ']').slideUp(settings.speed, function() {
-					jQuery(this).remove();
+					$(this).remove();
 				});
 				object.stage.queue.find('li[value=' + value + ']').removeClass('selected');
 				
@@ -102,7 +102,7 @@
 			// Make selection clickable
 			var select = function(item) {
 			
-				var item = jQuery(item);
+				var item = $(item);
 				
 				// Deselect
 				if(item.hasClass('selected')) {
@@ -134,8 +134,8 @@
 			
 		/*-------------------------------------------------------------------*/
 			
-			if(object instanceof jQuery === false) {
-				object = jQuery(object);
+			if(object instanceof $ === false) {
+				object = $(object);
 			}
 			
 			object.stage = {
@@ -143,7 +143,7 @@
 				// Get stage elements
 				selection: object.find(settings.selection),
 				empty: object.find('li.empty'),
-				queue: jQuery(settings.queue.constructor),
+				queue: $(settings.queue.constructor),
 
 				// Initialize Stage
 				initialize: function() {
@@ -159,10 +159,10 @@
 					// Add queue
 					if(object.is('.searchable') || object.is('.constructable')) {
 						if(object.is('.searchable')) {
-							jQuery('<input type="search" placeholder="' + Symphony.Language.get('Browse') + ' &#8230;" class="browser" value="" />').appendTo(object.stage.queue);
+							$('<input type="search" placeholder="' + Symphony.Language.get('Browse') + ' &#8230;" class="browser" value="" />').appendTo(object.stage.queue);
 						}
 						if(object.is('.constructable')) {
-							jQuery('<button class="create">' + Symphony.Language.get('Create New') + '</button>').appendTo(object.stage.queue);
+							$('<button class="create">' + Symphony.Language.get('Create New') + '</button>').appendTo(object.stage.queue);
 						}
 						object.stage.selection.after(object.stage.queue);
 					}
@@ -208,8 +208,8 @@
 				
 				addDestructor: function(items) {
 					if(object.is('.destructable')) {
-						jQuery('<a class="destructor">' + Symphony.Language.get('Remove Item') + '</a>').appendTo(items).click(function(event) {
-							var item = jQuery(event.target).parent('li');
+						$('<a class="destructor">' + Symphony.Language.get('Remove Item') + '</a>').appendTo(items).click(function(event) {
+							var item = $(event.target).parent('li');
 							destruct(item);
 						});
 					}
@@ -222,11 +222,11 @@
 						
 						// Append queue
 						object.stage.queue.find('ul').remove();
-						var list = jQuery('<ul class="queue" />').css('min-height', 50).appendTo(object.stage.queue).slideDown('fast');
+						var list = $('<ul class="queue" />').css('min-height', 50).appendTo(object.stage.queue).slideDown('fast');
 						
 						// Get queue content
 						if(settings.queue.ajax) {
-							jQuery.ajax(jQuery.extend({
+							$.ajax($.extend({
 								async: false,
 								type: 'GET',
 								dataType: 'html',
@@ -235,17 +235,17 @@
 									list.find('li.loading').remove();
 									
 									if(result != '') {	
-										list.append(jQuery(result));
+										list.append($(result));
 										
 										// Highlight items, add events
 										list.find('li').each(function(index, element) {
-											element = jQuery(element);
+											element = $(element);
 																				
 											// Odd
 											if(index % 2 != 0) element.addClass('odd')
 											
 											// Selected
-											var value = jQuery(element).attr('value');
+											var value = $(element).attr('value');
 											if(object.find('ul:first li[value=' + value + ']').size() > 0) element.addClass('selected');
 											
 											// Prevent clicks on layout anchors
@@ -264,7 +264,7 @@
 						
 						// Empty queue information
 						if(object.stage.queue.find('li').size() == 0) {
-							list.append(jQuery('<li class="message"><span>' + Symphony.Language.get('There are currently no items available. Perhaps you want create one first?') + ' <a class="create">' + Symphony.Language.get('Click here to create a new item.') + '</a></span></li>')).slideDown(settings.queue.speed);
+							list.append($('<li class="message"><span>' + Symphony.Language.get('There are currently no items available. Perhaps you want create one first?') + ' <a class="create">' + Symphony.Language.get('Click here to create a new item.') + '</a></span></li>')).slideDown(settings.queue.speed);
 						}
 						
 						// Reset minimum height
@@ -278,9 +278,9 @@
 					}					
 
 					// Automatically hide queue later
-					jQuery('body').bind('click', function(event) {
+					$('body').bind('click', function(event) {
 						object.stage.hideQueue();
-						jQuery('body').unbind('click');
+						$('body').unbind('click');
 					});
 				},
 				
@@ -293,7 +293,7 @@
 				
 				search: function(event) {
 
-					var search = jQuery.trim(jQuery(event.target).val()).toLowerCase().split(' ');
+					var search = $.trim($(event.target).val()).toLowerCase().split(' ');
 
 					// Build search index
 					if(!this.search_index) {
@@ -311,7 +311,7 @@
 							var item = items.filter(':nth(' + index + ')');
 
 							// Items have to match all search strings
-							jQuery.each(search, function(index, string) {
+							$.each(search, function(index, string) {
 								if(content.search(string) == -1) found = false;
 							});
 						
@@ -319,7 +319,7 @@
 							if(found) {
 								item.addClass('found').slideDown(settings.speed);
 								item.parent().find('li.none').slideUp(settings.speed, function(event) {
-									jQuery(this).remove();
+									$(this).remove();
 								});
 							}
 	
@@ -335,13 +335,13 @@
 						
 						// None found
 						if(found.size() == 0 && items.parent().find('li.none').size() == 0) {
-							var none = jQuery('<li class="none"><span>' + Symphony.Language.get('No items found.') + '</span></li>');
+							var none = $('<li class="none"><span>' + Symphony.Language.get('No items found.') + '</span></li>');
 							items.parent().append(none).slideDown(settings.speed);
 						}
 												
 						// Reset zebra style
 						found.each(function(index, item) {
-							item = jQuery(item).removeClass('found');
+							item = $(item).removeClass('found');
 							if(index % 2 != 0) item.addClass('odd');
 						});
 
@@ -352,7 +352,7 @@
 						items.removeClass('odd').filter(':odd').addClass('odd');
 						items.slideDown(settings.speed);
 						items.parent().find('li.none').slideUp(settings.speed, function(event) {
-							jQuery(this).remove();
+							$(this).remove();
 						});
 					}
 					
@@ -371,7 +371,7 @@
 	};
 
 	// Initialize Stage	
-	$('document').ready(function() {
+	$(document).ready(function() {
 		$('.stage').symphonyStage();
 	});
 	

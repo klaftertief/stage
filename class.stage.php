@@ -78,7 +78,45 @@
 		 *  Context of the Stage instance		 
 		 */
 		public static function saveSettings($field_id, $data, $context) {
+			Administration::instance()->Database->query(
+				"DELETE FROM `tbl_fields_stage` WHERE `field_id` = '$field_id' LIMIT 1"
+			);
+					
+			// Save new stage settings for this field
+			if(is_array($data)) {
+				Administration::instance()->Database->query(
+					"INSERT INTO `tbl_fields_stage` (`field_id`, " . implode(', ', array_keys($data)) . ", `context`) VALUES ($field_id, " . implode(', ', $data) . ", 'subsectionmanager')"
+				);
+			}
+			else {
+				Administration::instance()->Database->query(
+					"INSERT INTO `tbl_fields_stage` (`field_id`, `context`) VALUES ($field_id, $context)"
+				);
+			}
+		}
 		
+		/**
+		 * Get components
+		 *
+		 * @param number $field_id
+		 *  ID of the field linked to this Stage instance
+		 * @return array
+		 *  Array of active components
+		 */
+		public static function getComponents($field_id) {
+		
+			// Fetch settings
+			$settings = Administration::instance()->Database->fetchRow(0,
+				"SELECT `constructable`, `destructable`, `draggable`, `droppable`, `searchable` FROM `tbl_fields_stage` WHERE `field_id` = '" . $field_id . "' LIMIT 1"
+			);
+			
+			// Remove disabled components
+			foreach($settings as $key => $value) {
+				if($value == 0) unset($settings[$key]);
+			}
+			
+			// Return active components
+			return array_keys($settings);
 		}
 		
 	}

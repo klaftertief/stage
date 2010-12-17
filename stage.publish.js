@@ -73,7 +73,6 @@
 			// Construction
 			stage.delegate('a.create', 'click', function(event) {
 				event.preventDefault();
-				event.stopPropagation();
 				
 				// Create new item
 				construct();			
@@ -82,7 +81,6 @@
 			// Destruction
 			stage.delegate('a.destructor', 'click', function(event) {
 				event.preventDefault();
-				event.stopPropagation();
 
 				// Find and destruct item
 				var item = $(this).parents('li');

@@ -94,7 +94,7 @@
 			});
 			
 			// Selecting
-			queue.delegate('li', 'click', function() {
+			queue.delegate('li', 'click choose', function() {
 				var item = $(this);
 				choose(item);
 			});
@@ -162,6 +162,14 @@
 					$('<a class="destructor">' + Symphony.Language.get('Remove Item') + '</a>').appendTo(item);
 				}
 				
+				// Destruct other items in single mode
+				if(stage.is('.single')) {
+					items.not(item).trigger('destruct');
+				}
+				
+				// Sync queue
+				queue.find('li[data-value="' + item.attr('data-value') + '"]').trigger('choose');
+				
 				// Show item
 				item.appendTo(selection).slideDown('fast', function() {
 					selection.removeClass('constructing');
@@ -195,6 +203,9 @@
 						empty.appendTo(selection).slideDown('fast');
 					}
 				}
+				
+				// Sync queue
+				queue.find('li[data-value="' + item.attr('data-value') + '"]').trigger('choose');
 
 				selection.removeClass('destructing');
 				stage.trigger('destructstop', [item]);
@@ -202,6 +213,7 @@
 			
 			// Choose an item in the queue
 			var choose = function(item) {
+				stage.trigger('choosestart', [item]);
 				
 				// Deselect
 				if(item.is('.selected')) {
@@ -221,8 +233,14 @@
 						item.addClass('selected');
 						item.trigger('construct');
 					}
+
+					// Single selects
+					if(object.is('.single')) {
+						items.not(item).trigger('destruct');
+					}
 				}
 				
+				stage.trigger('choosestop', [item]);
 			}
 				
 			// Search the queue

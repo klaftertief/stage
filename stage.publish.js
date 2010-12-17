@@ -181,7 +181,7 @@
 				});
 				
 				// Update queue
-				queue.find('li[value=' + item.attr('value') + ']').removeClass('selected');
+				queue.find('li[data-value=' + item.attr('data-value') + ']').removeClass('selected');
 				
 				// Check selection size
 				if(items.not(item).size() == 0 && !selection.is('.constructing')) {
@@ -209,7 +209,7 @@
 					// Destruct item
 					if(object.is('.destructable')) {
 						item.removeClass('selected');
-						selection.find('li[value="' + item.attr('value') + '"]').trigger('destruct');
+						selection.find('li[data-value="' + item.attr('data-value') + '"]').trigger('destruct');
 					}
 				}
 				

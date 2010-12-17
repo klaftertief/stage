@@ -88,6 +88,11 @@ div.stage ul li span, div.draghelper span, div.stage ul li a.file, div.draghelpe
 	text-decoration: none;
 }
 
+div.stage li em {
+	font-style: normal;
+	color: #908e88;
+}
+
 div.stage div.queue ul li.selected span {
 	color: #fff;
 }

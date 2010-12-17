@@ -61,7 +61,8 @@
 				selection.after(queue);
 			}
 		
-			// Store templates
+			// Store templates:
+			// This is needed for other script that interact with Stage
 			stage.data('templates.stage', {
 				templates: templates,
 				empty: empty			

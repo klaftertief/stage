@@ -43,7 +43,7 @@
 			// Add destructors
 			if(stage.is('.destructable')) {
 				var destructor = $('<a class="destructor">' + Symphony.Language.get('Remove Item') + '</a>');
-				items.append(destructor);
+				items.append(destructor.clone(true));
 				
 				// It's possible that the empty message is a create template
 				if(empty.is('.template.create')) {
@@ -70,15 +70,25 @@
 
 		/*-----------------------------------------------------------------------*/
 		
-			// Construction
+			// Clicking
+			stage.bind('click', function(event) {
+			
+				// Prevent click-trough
+				event.stopPropagation();
+			});
+			
+			// Constructing
 			stage.delegate('a.create', 'click', function(event) {
 				event.preventDefault();
 				
 				// Create new item
-				construct();			
+				construct();
+				
+				// Close browser
+				stage.trigger('browsestop');		
 			});
 
-			// Destruction
+			// Destructing
 			stage.delegate('a.destructor', 'click', function(event) {
 				event.preventDefault();
 
@@ -100,20 +110,20 @@
 			// Queuing
 			stage.delegate('.browser', 'click', function() {
 				stage.trigger('browsestart');
-			})
-			$('body').one('click', function() {
-				stage.trigger('browsestop');
-			});
-			stage.bind('browsestart', function() {
 				queue.find('ul').slideDown('fast');
-			});
+
+				// Close queue on body click
+				$('body').one('click', function() {
+					stage.trigger('browsestop');
+				});
+			})
 			stage.bind('browsestop', function() {
 				queue.find('.browser').val('');
 				queue.find('ul').slideUp('fast');
 			});
 			
 			// Searching
-			stage.delegate('.browser', 'click keyup', function(event) {
+			stage.delegate('.browser', 'keyup', function(event) {
 				var strings = $.trim($(event.target).val()).toLowerCase().split(' ');
 
 				// Searching
@@ -151,7 +161,7 @@
 				
 				// New item
 				else {
-					item = templates.filter('.create').clone().removeClass('template create empty').hide().appendTo(selection);
+					item = templates.filter('.create').clone().removeClass('template create empty').addClass('new').hide().appendTo(selection);
 					items = items.add(item);
 				}
 				
@@ -217,7 +227,7 @@
 				if(item.is('.selected')) {
 				
 					// Destruct item
-					if(object.is('.destructable')) {
+					if(stage.is('.destructable')) {
 						item.removeClass('selected');
 						selection.find('li[data-value="' + item.attr('data-value') + '"]').trigger('destruct');
 					}
@@ -227,13 +237,13 @@
 				else {
 				
 					// Construct item	
-					if(object.is('.constructable')) {
+					if(stage.is('.constructable')) {
 						item.addClass('selected');
 						item.trigger('construct');
 					}
 
 					// Single selects
-					if(object.is('.single')) {
+					if(stage.is('.single')) {
 						items.not(item).trigger('destruct');
 					}
 				}
@@ -271,7 +281,7 @@
 
 					// Hide other items
 					else {
-						current.slideUp('fast');
+						current.removeClass('found').slideUp('fast');
 					}
 				});
 
@@ -290,6 +300,5 @@
 		});
 
 	});
-	
 	
 })(jQuery.noConflict());

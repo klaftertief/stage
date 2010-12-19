@@ -17,6 +17,14 @@
 	 */
 	$(document).ready(function() {
 
+		// Language strings
+		Symphony.Language.add({
+			'Browse': false,
+			'Create New': false,
+			'Remove Item': false,
+			'No items found.': false
+		});
+
 		// Initialize Stage
 		$('div.stage').each(function() {
 			var stage = $(this),

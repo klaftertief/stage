@@ -87,6 +87,10 @@
 				// Close browser
 				stage.trigger('browsestop');		
 			});
+			queue.delegate('li', 'construct', function() {
+				var item = $(this);
+				construct(item);
+			});
 
 			// Destructing
 			stage.delegate('a.destructor', 'click', function(event) {
@@ -102,7 +106,7 @@
 			});
 			
 			// Selecting
-			queue.delegate('li', 'click choose', function() {
+			queue.delegate('li', 'click', function() {
 				var item = $(this);
 				choose(item);
 			});
@@ -235,16 +239,16 @@
 				
 				// Select
 				else {
+
+					// Single selects
+					if(stage.is('.single')) {
+						items.trigger('destruct');
+					}
 				
 					// Construct item	
 					if(stage.is('.constructable')) {
 						item.addClass('selected');
 						item.trigger('construct');
-					}
-
-					// Single selects
-					if(stage.is('.single')) {
-						items.not(item).trigger('destruct');
 					}
 				}
 				

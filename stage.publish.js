@@ -1,13 +1,5 @@
 (function($) {
 
-	// Language strings
-	Symphony.Language.add({
-		'Browse': false,
-		'Create New': false,
-		'Remove Item': false,
-		'No items found.': false
-	});
-	
 	/**
 	 * Stage is a JavaScript utility for Symphony 
 	 * which adds a multiselect interface to the backend.

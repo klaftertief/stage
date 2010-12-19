@@ -71,14 +71,14 @@
 		/*-----------------------------------------------------------------------*/
 		
 			// Clicking
-			stage.bind('click', function(event) {
+			stage.bind('click.stage', function(event) {
 			
 				// Prevent click-trough
 				event.stopPropagation();
 			});
 			
 			// Constructing
-			stage.delegate('a.create', 'click', function(event) {
+			stage.delegate('a.create', 'click.stage', function(event) {
 				event.preventDefault();
 				
 				// Create new item
@@ -87,47 +87,47 @@
 				// Close browser
 				stage.trigger('browsestop');		
 			});
-			queue.delegate('li', 'construct', function() {
+			queue.delegate('li', 'construct.stage', function() {
 				var item = $(this);
 				construct(item);
 			});
 
 			// Destructing
-			stage.delegate('a.destructor', 'click', function(event) {
+			stage.delegate('a.destructor', 'click.stage', function(event) {
 				event.preventDefault();
 
 				// Find and destruct item
 				var item = $(this).parents('li');
 				item.trigger('destruct');
 			});
-			stage.delegate('li', 'destruct', function() {
+			stage.delegate('li', 'destruct.stage', function() {
 				var item = $(this);
 				destruct(item);
 			});
 			
 			// Selecting
-			queue.delegate('li', 'click', function() {
+			queue.delegate('li', 'click.stage', function() {
 				var item = $(this);
 				choose(item);
 			});
 			
 			// Queuing
-			stage.delegate('.browser', 'click', function() {
+			stage.delegate('.browser', 'click.stage', function() {
 				stage.trigger('browsestart');
 				queue.find('ul').slideDown('fast');
 
 				// Close queue on body click
-				$('body').one('click', function() {
+				$('body').one('click.stage', function() {
 					stage.trigger('browsestop');
 				});
 			})
-			stage.bind('browsestop', function() {
+			stage.bind('browsestop.stage', function() {
 				queue.find('.browser').val('');
 				queue.find('ul').slideUp('fast');
 			});
 			
 			// Searching
-			stage.delegate('.browser', 'keyup', function(event) {
+			stage.delegate('.browser', 'keyup.stage', function(event) {
 				var strings = $.trim($(event.target).val()).toLowerCase().split(' ');
 
 				// Searching
@@ -141,7 +141,7 @@
 					stage.trigger('browsestart');
 				}
 			});
-			stage.bind('searchstart', function(event, strings) {
+			stage.bind('searchstart.stage', function(event, strings) {
 				search(strings);			
 			});
 					

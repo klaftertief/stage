@@ -43,11 +43,11 @@
 			// Add destructors
 			if(stage.is('.destructable')) {
 				var destructor = $('<a class="destructor">' + Symphony.Language.get('Remove Item') + '</a>');
-				items.append(destructor.clone(true));
+				items.append(destructor.clone());
 				
 				// It's possible that the empty message is a create template
 				if(empty.is('.template.create')) {
-					empty.append(destructor);
+					empty.append(destructor.clone());
 				}
 			}
 	
@@ -159,7 +159,7 @@
 				
 				// Existing item
 				if(item) {
-					item = item.clone().hide().appendTo(selection);
+					item = item.clone(true).hide().appendTo(selection);
 					items = items.add(item);
 				}
 				
@@ -171,7 +171,7 @@
 				
 				// Add destructor
 				if(stage.is('.destructable')) {
-					$('<a class="destructor">' + Symphony.Language.get('Remove Item') + '</a>').appendTo(item);
+					item.append(destructor.clone());
 				}
 				
 				// Destruct other items in single mode
@@ -195,7 +195,7 @@
 				selection.addClass('destructing');
 
 				// Remove item
-				item.slideUp('fast', function() {
+				item.addClass('destructing').slideUp('fast', function() {
 					item.remove();
 					items = items.not(item);
 				});
@@ -204,7 +204,7 @@
 				queue.find('li[data-value=' + item.attr('data-value') + ']').removeClass('selected');
 				
 				// Check selection size
-				if(items.not(item).size() == 0 && !selection.is('.constructing')) {
+				if(items.not(item).size() == 0 && !selection.is('.constructing') && !selection.is('.choosing')) {
 					
 					// It's possible that the empty message is a create template
 					if(empty.is('.template.create')) {
@@ -226,7 +226,8 @@
 			// Choose an item in the queue
 			var choose = function(item) {
 				stage.trigger('choosestart', [item]);
-				
+				selection.addClass('choosing');
+			
 				// Deselect
 				if(item.is('.selected')) {
 				
@@ -252,6 +253,7 @@
 					}
 				}
 				
+				selection.removeClass('choosing');
 				stage.trigger('choosestop', [item]);
 			}
 				

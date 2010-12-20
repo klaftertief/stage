@@ -24,7 +24,7 @@
 				templates = stage.find('li.template').remove(),
 				empty = stage.find('li.empty').remove(),			
 				items = stage.find('li'),
-				queue = $('<div class="queue" />'),
+				queue = $('<div class="queue"><ul></ul></div>'),
 				index;
 
 			// Handle empty stage
@@ -37,7 +37,7 @@
 
 			// Add constructors
 			if(stage.is('.constructable')) {
-				$('<a class="create">' + Symphony.Language.get('Create New') + '</a>').appendTo(queue);
+				$('<a class="create">' + Symphony.Language.get('Create New') + '</a>').prependTo(queue);
 			}
 
 			// Add destructors
@@ -53,11 +53,12 @@
 	
 			// Add search field
 			if(stage.is('.searchable')) {
-				$('<input type="search" placeholder="' + Symphony.Language.get('Browse') + ' &#8230;" class="browser" value="" />').appendTo(queue);
+				$('<input type="search" placeholder="' + Symphony.Language.get('Browse') + ' &#8230;" class="browser" value="" />').prependTo(queue);
 			}
 
 			// Add queue
-			if(queue.children().size() > 0) {
+			// Note: The queue list is always available
+			if(queue.children().size() > 1) {
 				selection.after(queue);
 			}
 		
@@ -110,7 +111,7 @@
 				var item = $(this);
 				choose(item);
 			});
-			
+						
 			// Queuing
 			stage.delegate('.browser', 'click.stage', function() {
 				stage.trigger('browsestart');
@@ -239,7 +240,7 @@
 					// Destruct item
 					if(stage.is('.destructable')) {
 						item.removeClass('selected');
-						selection.find('li[data-value="' + item.attr('data-value') + '"]').trigger('destruct');
+						selection.removeClass('choosing').find('li[data-value="' + item.attr('data-value') + '"]').trigger('destruct');
 					}
 				}
 				
@@ -256,9 +257,10 @@
 						item.addClass('selected');
 						item.trigger('construct');
 					}
+	
+					selection.removeClass('choosing');
 				}
 				
-				selection.removeClass('choosing');
 				stage.trigger('choosestop', [item]);
 			}
 				

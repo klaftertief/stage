@@ -120,7 +120,7 @@
 				$('body').one('click.stage', function() {
 					stage.trigger('browsestop');
 				});
-			})
+			});
 			stage.bind('browsestop.stage', function() {
 				queue.find('.browser').val('');
 				queue.find('ul').slideUp('fast');
@@ -255,7 +255,7 @@
 				
 				selection.removeClass('choosing');
 				stage.trigger('choosestop', [item]);
-			}
+			};
 				
 			// Search the queue
 			var search = function(string) {
@@ -301,7 +301,7 @@
 				else {
 					stage.trigger('searchnonfound');
 				}
-			}
+			};
 					
 		});
 

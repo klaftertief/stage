@@ -126,6 +126,11 @@
 				queue.find('ul').slideUp('fast');
 			});
 			
+			// Updating
+			stage.bind('update.stage', function() {
+				sync();
+			});
+			
 			// Searching
 			stage.delegate('.browser', 'keyup.stage', function(event) {
 				var strings = $.trim($(event.target).val()).toLowerCase().split(' ');
@@ -301,6 +306,14 @@
 				else {
 					stage.trigger('searchnonfound');
 				}
+			}
+			
+			// Synchronize lists
+			var sync = function() {
+				queue.find('li').removeClass('selected');
+				selection.find('li').each(function(index, item) {
+					queue.find('li[data-value="' + $(item).attr('data-value') + '"]').addClass('selected');
+				});
 			}
 					
 		});

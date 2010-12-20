@@ -258,7 +258,7 @@
 			};
 				
 			// Search the queue
-			var search = function(string) {
+			var search = function(strings) {
 				var queue_items = queue.find('li');
 
 				// Build search index

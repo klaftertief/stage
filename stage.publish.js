@@ -262,10 +262,10 @@
 				}
 				
 				stage.trigger('choosestop', [item]);
-			}
+			};
 				
 			// Search the queue
-			var search = function(string) {
+			var search = function(strings) {
 				var queue_items = queue.find('li');
 
 				// Build search index
@@ -308,7 +308,7 @@
 				else {
 					stage.trigger('searchnonfound');
 				}
-			}
+			};
 			
 			// Synchronize lists
 			var sync = function() {
@@ -316,7 +316,7 @@
 				selection.find('li').each(function(index, item) {
 					queue.find('li[data-value="' + $(item).attr('data-value') + '"]').addClass('selected');
 				});
-			}
+			};
 					
 		});
 

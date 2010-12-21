@@ -143,6 +143,7 @@
 								
 				// Not searching 
 				else {
+					queue.find('li').slideDown('fast');
 					stage.trigger('searchstop');
 					stage.trigger('browsestart');
 				}
@@ -276,12 +277,12 @@
 				}
 				
 				// Search
-				index.each(function(index, content) {
+				index.each(function(position, content) {
 					var found = true,
-						current = queue_items.filter(':nth(' + index + ')');
+						current = queue_items.filter(':nth(' + position + ')');
 
 					// Items have to match all search strings
-					$.each(strings, function(index, string) {
+					$.each(strings, function(count, string) {
 						if(content.search(string) == -1) {
 							found = false;
 						}
@@ -289,18 +290,17 @@
 				
 					// Show matching items
 					if(found) {
-						current.addClass('found').slideDown('fast');
+						current.slideDown('fast');
 					}
 
 					// Hide other items
 					else {
-						current.removeClass('found').slideUp('fast');
+						current.slideUp('fast');
 					}
 				});
 
 				// Found
-				if(queue_items.filter('.found').size() > 0) {
-					queue_items.removeClass('found');
+				if(queue_items.filter(':visible').size() > 0) {
 					stage.trigger('searchfound');
 				}
 

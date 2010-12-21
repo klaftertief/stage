@@ -59,6 +59,7 @@
 			// Add queue
 			// Note: The queue list is always available
 			if(queue.children().size() > 1) {
+				queue.find('ul').hide();
 				selection.after(queue);
 			}
 		

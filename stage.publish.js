@@ -255,7 +255,7 @@
 					}
 				
 					// Construct item	
-					if(stage.is('.constructable')) {
+					if(stage.is('.searchable')) {
 						item.addClass('selected');
 						item.trigger('construct');
 					}

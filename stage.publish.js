@@ -177,7 +177,7 @@
 				}
 				
 				// Add destructor
-				if(stage.is('.destructable') && !item.has('a.destructor')) {
+				if(stage.is('.destructable') && item.has('a.destructor').size() == 0) {
 					item.append(destructor.clone());
 				}
 				

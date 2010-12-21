@@ -36,17 +36,6 @@ div.stage ul li:hover {
 	background: #dcdcdc;
 }
 
-div.stage li.dragging {
-	background: #d3d3d3;
-	border-bottom: 1px solid #deddd9;
-	border-left: 1px solid #b5b4af;
-	border-right: 1px solid #b5b4af;
-	border-top: 1px solid #c2c2c2;
-	-moz-box-shadow: 0 0 4px rgba(46, 45, 40, 0.3);
-	-webkit-box-shadow: 0 0 4px rgba(46, 45, 40, 0.3);
-	z-index: 1000;
-}
-
 div.stage li.active, div.stage li.active:hover {
 	background: #d3d3d3;
 	border-bottom: 1px solid #deddd9;
